@@ -1,0 +1,19 @@
+services:
+  app-api:
+    build:
+      context: ../../
+      dockerfile: ./deploy/compose/api/Dockerfile
+
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      TRON_RPC_URL: ${TRON_RPC_URL}
+      TRON_RPC_API_KEY: ${TRON_RPC_API_KEY}
+      
+    ports:
+      - ${API_PORT}:8000
+
+    depends_on:
+      app-db:
+        condition: service_healthy
+        
+    command: "gunicorn --forwarded-allow-ips * -k uvicorn.workers.UvicornWorker presentation.api.__main__:main --bind 0.0.0.0:8000"

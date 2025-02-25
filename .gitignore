@@ -1,0 +1,9 @@
+.idea
+.venv
+.env
+*.session
+.pytest_cache
+__pycache__
+venv
+
+.vscode
