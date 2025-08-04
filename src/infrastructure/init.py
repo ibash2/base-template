@@ -1,6 +1,17 @@
 from functools import lru_cache
 
+from application.account.commands.account import GetAccountInfoCommand, GetAccountInfoCommandHandler
+from application.account.queries.account import (
+    GetAccountInfoQuery,
+    GetAccountInfoQueryHandler,
+    GetAccountsQuery,
+    GetAccountsQueryHandler,
+)
+from application.common.interfaces.uow import UnitOfWork
 from httpx import AsyncClient
+from infrastructure.persistence.db.repositories.address import BaseAccountRepository, SqlAlchemyAccountRepository
+from infrastructure.persistence.db.repositories.base import build_sa_engine, build_sa_session_factory
+from infrastructure.persistence.db.uow import SQLAlchemyUoW
 from tronpy.async_tron import AsyncTron, AsyncHTTPProvider
 from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
@@ -13,29 +24,8 @@ from punq import (
 )
 
 from settings.config import Config
-from application.queries.account import (
-    GetAccountInfoQuery,
-    GetAccountInfoQueryHandler,
-    GetAccountsQuery,
-    GetAccountsQueryHandler,
-)
-from application.commands.account import (
-    GetAccountInfoCommandHandler,
-    GetAccountInfoCommand,
-)
 from infrastructure.integrations.blockchain.clients.base import BaseAccountDataClient
 from infrastructure.integrations.blockchain.clients.tron import TronAccountDataClient
-from infrastructure.db.repositories.address import (
-    BaseAccountRepository,
-    SqlAlchemyAccountRepository,
-)
-from infrastructure.db.repositories.base import (
-    build_sa_engine,
-    build_sa_session_factory,
-)
-from infrastructure.db.uow import SQLAlchemyUoW
-
-from infrastructure.uow import UnitOfWork
 from infrastructure.mediator.base import Mediator
 from infrastructure.mediator.command import CommandMediator
 from infrastructure.mediator.event import EventMediator

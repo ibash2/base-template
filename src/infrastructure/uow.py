@@ -1,30 +1,16 @@
 from collections.abc import Sequence
 from typing import Protocol
 
-from infrastructure.db.uow import SQLAlchemyUoW
+from infrastructure.persistence.db.uow import SQLAlchemyUoW
 
 
-class UnitOfWork(Protocol):
-    async def __aenter__(self):
-        raise NotImplementedError
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        raise NotImplementedError
-
-    async def commit(self) -> None:
-        raise NotImplementedError
-
-    async def rollback(self) -> None:
-        raise NotImplementedError
-
-
-def build_uow(db_uow: SQLAlchemyUoW) -> UnitOfWork:
+def build_uow(db_uow: SQLAlchemyUoW) -> "UnitOfWorkImpl":
     uow = UnitOfWorkImpl((db_uow,))
     return uow
 
 
-class UnitOfWorkImpl(UnitOfWork):
-    def __init__(self, uows: Sequence[UnitOfWork]) -> None:
+class UnitOfWorkImpl:
+    def __init__(self, uows: Sequence[]) -> None:
         self._uows = uows
 
     async def __aenter__(self):
