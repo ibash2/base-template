@@ -1,10 +1,15 @@
 from dataclasses import dataclass
 
-from infrastructure.exceptions.base import InfrastructureException
+
+@dataclass(eq=False)
+class MediatorException(Exception):
+    @property
+    def message(self):
+        return "Ощибка инициализации медиатора."
 
 
 @dataclass(eq=False)
-class EventHandlersNotRegisteredException(InfrastructureException):
+class EventHandlersNotRegisteredException(MediatorException):
     event_type: type
 
     @property
@@ -13,7 +18,7 @@ class EventHandlersNotRegisteredException(InfrastructureException):
 
 
 @dataclass(eq=False)
-class CommandHandlersNotRegisteredException(InfrastructureException):
+class CommandHandlersNotRegisteredException(MediatorException):
     command_type: type
 
     @property

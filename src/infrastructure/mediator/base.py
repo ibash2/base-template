@@ -10,12 +10,12 @@ from dataclasses import (
 )
 from typing import Any, Type
 
+from infrastructure.mediator.exception import CommandHandlersNotRegisteredException, EventHandlersNotRegisteredException
 from punq import Container
 
 from application.common.command import Command, CommandHandler
 from application.common.event import Event, EventHandler
 from application.common.query import Query, QueryHandler
-from infrastructure.exceptions.mediator import CommandHandlersNotRegisteredException
 from infrastructure.mediator.command import CommandMediator
 from infrastructure.mediator.event import EventMediator
 from infrastructure.mediator.query import QueryMediator
@@ -85,6 +85,9 @@ class Mediator(EventMediator, QueryMediator, CommandMediator):
         for event in events:
             logger.debug(f"{event} occurred", extra={"event_data": asdict(event)})
             handlers: Iterable[Type[EventHandler]] = self.events_map[event.__class__]
+
+            if not handlers: 
+                raise EventHandlersNotRegisteredException(type(event))
 
             tasks = []
             for handler in handlers:
