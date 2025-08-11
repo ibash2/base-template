@@ -36,6 +36,9 @@ from infrastructure.mediator.query import QueryMediator
 def init_container() -> Container:
     return _init_container()
 
+def resolve_mediator() -> Mediator:
+    container = init_container()
+    return container.resolve(Mediator)
 
 def _init_container() -> Container:
     container = Container()

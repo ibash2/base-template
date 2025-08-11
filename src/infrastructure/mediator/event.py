@@ -9,8 +9,8 @@ from dataclasses import (
     field,
 )
 
-from application.events.base import (
-    BaseEvent,
+from application.common.event import (
+    Event,
     EventHandler,
     ER,
     ET,
@@ -30,4 +30,4 @@ class EventMediator(ABC):
     ): ...
 
     @abstractmethod
-    async def publish(self, events: Iterable[BaseEvent]) -> Iterable[ER]: ...
+    async def publish(self, events: Iterable[Event]) -> Iterable[ER]: ...

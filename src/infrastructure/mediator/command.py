@@ -9,8 +9,8 @@ from dataclasses import (
     field,
 )
 
-from application.commands.base import (
-    BaseCommand,
+from application.common.command import (
+    Command,
     CommandHandler,
     CR,
     CT,
@@ -29,5 +29,5 @@ class CommandMediator(ABC):
         ...
 
     @abstractmethod
-    async def handle_command(self, command: BaseCommand) -> Iterable[CR]:
+    async def handle_command(self, command: Command) -> Iterable[CR]:
         ...

@@ -4,6 +4,7 @@ from collections.abc import (
     Callable,
 )
 
+from domain.common.exceptions.base import AppError
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from starlette import status
@@ -11,14 +12,11 @@ from starlette.requests import Request
 
 from presentation.api.controllers.schemas import ErrorSchema
 
-from domain.exceptions.base import ApplicationException
-
-
 logger = logging.getLogger(__name__)
 
 
 def setup_exception_handlers(app: FastAPI) -> None:
-    app.add_exception_handler(ApplicationException, error_handler())
+    app.add_exception_handler(AppError, error_handler())
     # app.add_exception_handler(Exception, unknown_exception_handler)
 
 
@@ -27,7 +25,7 @@ def error_handler() -> Callable[..., Awaitable[JSONResponse]]:
 
 
 async def app_error_handler(
-    request: Request, err: ApplicationException,
+    request: Request, err: AppError,
 ) -> JSONResponse:
     return await handle_error(request=request, err=err, err_data=err.message)
 
