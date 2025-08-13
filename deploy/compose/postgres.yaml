@@ -9,7 +9,7 @@ services:
   
     restart: on-failure
     volumes:
-      - ../../alembic.ini:/app/alembic.ini:ro
+      - ../../alembic.ini:/srt/alembic.ini:ro
       - ../../src/:/src/src/
 
     environment:
