@@ -10,7 +10,7 @@ services:
     restart: on-failure
     volumes:
       - ../../alembic.ini:/app/alembic.ini:ro
-      - ../../app/:/app/app/
+      - ../../src/:/src/src/
 
     environment:
       DATABASE_URL: ${DATABASE_URL}
