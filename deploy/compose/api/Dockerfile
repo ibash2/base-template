@@ -23,7 +23,7 @@ WORKDIR $PYSETUP_PATH
 COPY ./pyproject.toml ./poetry.lock ./
 RUN pip install --no-cache-dir --upgrade pip==24.0 \
     && pip install --no-cache-dir setuptools==69.5.1 wheel==0.43.0 \
-    && pip install --no-cache-dir poetry==1.8.2 \
+    && pip install --no-cache-dir poetry \
     && poetry install --only main \
     && apt-get purge -y gcc git \
     && apt-get autoremove -y \
