@@ -17,5 +17,5 @@ class AppError(Exception):
 @dataclass(eq=False)
 class DomainError(AppError):
     @property
-    def message(self):
+    def message(self) -> str:
         return "A domain error occurred."

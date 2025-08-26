@@ -71,8 +71,8 @@ def _init_container() -> Container:
         instance=build_sa_session_factory(container.resolve(AsyncEngine)),
         scope=Scope.singleton,
     )
-    container.register(SQLAlchemyUoW, SQLAlchemyUoW, scope=Scope.singleton)
-    container.register(UnitOfWork, SQLAlchemyUoW, scope=Scope.singleton)
+    container.register(SQLAlchemyUoW, SQLAlchemyUoW)
+    container.register(UnitOfWork, SQLAlchemyUoW)
 
     container.register(BaseAccountRepository, SqlAlchemyAccountRepository)
 
