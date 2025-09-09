@@ -6,7 +6,7 @@ authors = [
     {name = "ibash2",email = "ibragim.020205@gmail.com"}
 ]
 readme = "README.md"
-requires-python = "^3.11"
+requires-python = ">=3.11,<=3.12.1"
 dependencies = [
     "punq (>=0.7.0,<0.8.0)",
     "sqlalchemy (>=2.0.38,<3.0.0)",
