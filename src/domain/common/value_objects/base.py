@@ -1,7 +1,4 @@
-from abc import (
-    ABC,
-    abstractmethod,
-)
+from abc import ABC
 from dataclasses import dataclass
 from typing import (
     Any,
@@ -10,21 +7,19 @@ from typing import (
 )
 
 
-VT = TypeVar('VT', bound=Any)
+VT = TypeVar("VT", bound=Any)
+
 
 @dataclass(frozen=True)
 class BaseValueObject(ABC):
     def __post_init__(self):
         self._validate()
 
-
-    def _validate(self):
-        ...
+    def _validate(self): ...
 
 
 @dataclass(frozen=True)
-class ValueObject(ABC, Generic[VT]):
+class ValueObject(BaseValueObject, Generic[VT]):
     value: VT
 
-    def as_generic_type(self) -> VT:
-        ...
+    def as_generic_type(self) -> VT: ...
