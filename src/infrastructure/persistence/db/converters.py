@@ -1,16 +1,13 @@
-from dataclasses import asdict
-
-from domain.entities.account import Account
-from domain.values.address import Address
-from infrastructure.db import models
+from domain.example.entities.example import Example
+from domain.example.value_objects.address import Address
+from infrastructure.persistence.db import models
 
 
-def convert_account_entity_to_db_model(account: Account) -> models.Account:
-    return models.Account(
-        id=account.id,
-        address=account.address.as_generic_type(),
+def convert_example_entity_to_db_model(example: Example) -> models.Example:
+    return models.Example(
+        id=example.id,
+        address=example.address.as_generic_type(),
     )
 
-
-def convert_db_model_to_account_entity(db_account: models.Account) -> Account:
-    return Account(id=db_account.id, address=Address(value=db_account.address))
+def convert_db_model_to_example_entity(db_example: models.Example) -> Example:
+    return Example(id=db_example.id, address=Address(value=db_example.address))

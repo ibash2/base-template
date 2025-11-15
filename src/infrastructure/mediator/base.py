@@ -10,15 +10,15 @@ from dataclasses import (
 )
 from typing import Any, Type
 
-from infrastructure.mediator.exception import CommandHandlersNotRegisteredException, EventHandlersNotRegisteredException
 from punq import Container
 
-from application.common.command import Command, CommandHandler
 from application.common.event import Event, EventHandler
 from application.common.query import Query, QueryHandler
-from infrastructure.mediator.command import CommandMediator
 from infrastructure.mediator.event import EventMediator
 from infrastructure.mediator.query import QueryMediator
+from infrastructure.mediator.command import CommandMediator
+from application.common.command import Command, CommandHandler
+from infrastructure.mediator.exception import CommandHandlersNotRegisteredException, EventHandlersNotRegisteredException
 
 
 logger = logging.getLogger("mediator")

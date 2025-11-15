@@ -1,17 +1,6 @@
 from functools import lru_cache
 
-from application.account.commands.account import GetAccountInfoCommand, GetAccountInfoCommandHandler
-from application.account.queries.account import (
-    GetAccountInfoQuery,
-    GetAccountInfoQueryHandler,
-    GetAccountsQuery,
-    GetAccountsQueryHandler,
-)
-from application.common.interfaces.uow import UnitOfWork
 from httpx import AsyncClient
-from infrastructure.persistence.db.repositories.address import BaseAccountRepository, SqlAlchemyAccountRepository
-from infrastructure.persistence.db.repositories.base import build_sa_engine, build_sa_session_factory
-from infrastructure.persistence.db.uow import SQLAlchemyUoW
 from tronpy.async_tron import AsyncTron, AsyncHTTPProvider
 from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
@@ -24,8 +13,15 @@ from punq import (
 )
 
 from settings.config import Config
-from infrastructure.integrations.blockchain.clients.base import BaseAccountDataClient
-from infrastructure.integrations.blockchain.clients.tron import TronAccountDataClient
+from application.common.interfaces.uow import UnitOfWork
+from application.example.interfaces.persistence.repo import ExampleRepo
+from application.example.interfaces.persistence.reader import ExampleInfoReader
+from application.example.commands.example import CreateExampleCommand, CreateExampleCommandHandler
+from application.example.queries.example import GetExampleInfoQuery, GetExampleInfoQueryHandler, GetExamplesQuery, GetExamplesQueryHandler
+from infrastructure.persistence.db.uow import SQLAlchemyUoW
+from infrastructure.persistence.db.repositories.example import SqlAlchemyExampleRepo
+from infrastructure.integrations.blockchain.clients.tron import TronExampleInfoReader
+from infrastructure.persistence.db.repositories.base import build_sa_engine, build_sa_session_factory
 from infrastructure.mediator.base import Mediator
 from infrastructure.mediator.command import CommandMediator
 from infrastructure.mediator.event import EventMediator
@@ -49,8 +45,8 @@ def _init_container() -> Container:
 
     # Integrations
     container.register(
-        BaseAccountDataClient,
-        instance=TronAccountDataClient(
+        ExampleInfoReader,
+        instance=TronExampleInfoReader(
             AsyncTron(
                 AsyncHTTPProvider(
                     config.tron_rpc_url,
@@ -74,17 +70,17 @@ def _init_container() -> Container:
     container.register(SQLAlchemyUoW, SQLAlchemyUoW)
     container.register(UnitOfWork, SQLAlchemyUoW)
 
-    container.register(BaseAccountRepository, SqlAlchemyAccountRepository)
+    container.register(ExampleRepo, SqlAlchemyExampleRepo)
 
     # Mediator
     mediator = Mediator(container)
 
     # commands
-    mediator.register_command(GetAccountInfoCommand, GetAccountInfoCommandHandler)
+    mediator.register_command(CreateExampleCommand, CreateExampleCommandHandler)
 
     # queries
-    mediator.register_query(GetAccountsQuery, GetAccountsQueryHandler)
-    mediator.register_query(GetAccountInfoQuery, GetAccountInfoQueryHandler)
+    mediator.register_query(GetExamplesQuery, GetExamplesQueryHandler)
+    mediator.register_query(GetExampleInfoQuery, GetExampleInfoQueryHandler)
 
     container.register(Mediator, instance=mediator)
     container.register(EventMediator, instance=mediator)

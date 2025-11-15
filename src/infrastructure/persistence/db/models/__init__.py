@@ -1,3 +1,3 @@
-from .account import Account
+from .example import Example
 
-__all__ = ("Account",)
+__all__ = ("Example",)
